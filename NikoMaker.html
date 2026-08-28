@@ -1,0 +1,2714 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>NikoFlyer</title>
+
+<style>
+*{box-sizing:border-box;user-select:none}
+
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:linear-gradient(
+        #79d7ff 0%,
+        #79d7ff 65%,
+        #72bd58 65%,
+        #72bd58 100%
+    );
+}
+
+body.night{
+    background:linear-gradient(
+        #101b3d 0%,
+        #101b3d 65%,
+        #263d30 65%,
+        #263d30 100%
+    );
+}
+
+button{
+    border:3px solid #333;
+    border-radius:12px;
+    background:white;
+    padding:8px 12px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 3px 7px #0004;
+}
+
+button:active{
+    transform:scale(.95);
+}
+
+.top{
+    position:fixed;
+    top:10px;
+    z-index:10000;
+}
+
+#foodButton{left:10px}
+#shopButton{left:130px}
+#adminButton{left:225px}
+#saveButton{left:375px}
+#eventButton{right:10px}
+
+#counter{
+    position:fixed;
+    left:10px;
+    top:58px;
+    background:white;
+    border:3px solid #333;
+    border-radius:12px;
+    padding:7px 12px;
+    font-weight:bold;
+    z-index:10000;
+}
+
+#status{
+    position:fixed;
+    right:10px;
+    top:58px;
+    display:none;
+    background:#ffe66d;
+    border:3px solid #806600;
+    border-radius:12px;
+    padding:7px 12px;
+    font-weight:bold;
+    z-index:10000;
+}
+
+#message{
+    position:fixed;
+    left:50%;
+    top:105px;
+    transform:translateX(-50%);
+    display:none;
+    background:white;
+    border:4px solid #333;
+    border-radius:15px;
+    padding:9px 18px;
+    font-size:20px;
+    font-weight:bold;
+    z-index:30000;
+}
+
+#feed{
+    position:fixed;
+    right:10px;
+    bottom:10px;
+    width:300px;
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    z-index:20000;
+}
+
+.feedItem{
+    background:white;
+    border:2px solid #333;
+    border-radius:10px;
+    padding:6px 9px;
+    font-weight:bold;
+}
+
+/* HOUSE */
+
+#roof{
+    position:fixed;
+    left:50%;
+    bottom:195px;
+    transform:translateX(-50%);
+    width:0;
+    height:0;
+    border-left:190px solid transparent;
+    border-right:190px solid transparent;
+    border-bottom:120px solid #873e1e;
+    z-index:4;
+}
+
+#house{
+    position:fixed;
+    left:50%;
+    bottom:10px;
+    transform:translateX(-50%);
+    width:300px;
+    height:190px;
+    background:#e5c187;
+    border:6px solid #67401f;
+    z-index:5;
+}
+
+#door{
+    position:absolute;
+    left:50%;
+    bottom:0;
+    transform:translateX(-50%);
+    width:58px;
+    height:95px;
+    background:#694017;
+    border:4px solid #42270f;
+}
+
+/* NIKO */
+
+.niko{
+    position:absolute;
+    width:105px;
+    height:105px;
+    object-fit:contain;
+    z-index:500;
+    touch-action:none;
+}
+
+.golden{
+    filter:
+        sepia(1)
+        saturate(6)
+        brightness(1.35)
+        drop-shadow(0 0 7px gold)
+        drop-shadow(0 0 18px gold);
+}
+
+.shiny{
+    animation:shine .7s infinite alternate;
+}
+
+@keyframes shine{
+    from{filter:brightness(1)}
+    to{filter:brightness(1.7) drop-shadow(0 0 15px white)}
+}
+
+.tiny{transform:scale(.45)}
+
+.panic{
+    animation:shake .12s infinite alternate;
+}
+
+@keyframes shake{
+    from{transform:rotate(-8deg)}
+    to{transform:rotate(8deg)}
+}
+
+/* SPEECH */
+
+.speech{
+    position:absolute;
+    background:white;
+    border:3px solid #333;
+    border-radius:14px;
+    padding:5px 9px;
+    font-weight:bold;
+    white-space:nowrap;
+    z-index:900;
+    pointer-events:none;
+}
+
+.goldSpeech{
+    background:#fff0a0;
+    border-color:#967000;
+}
+
+.goldLabel{
+    position:absolute;
+    background:#ffe76b;
+    border:3px solid #8c6900;
+    border-radius:10px;
+    padding:3px 7px;
+    font-size:12px;
+    font-weight:bold;
+    z-index:901;
+    pointer-events:none;
+}
+
+/* FOOD */
+
+.food{
+    position:absolute;
+    width:55px;
+    height:55px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:43px;
+    z-index:400;
+}
+
+/* COINS */
+
+.coin{
+    position:absolute;
+    font-size:40px;
+    z-index:380;
+    animation:spinCoin .7s infinite alternate;
+}
+
+@keyframes spinCoin{
+    from{transform:rotateY(0)}
+    to{transform:rotateY(180deg)}
+}
+
+/* EVENTS */
+
+.balloon{
+    position:absolute;
+    font-size:55px;
+    z-index:350;
+}
+
+.frog{
+    position:absolute;
+    font-size:65px;
+    z-index:550;
+}
+
+.bee{
+    position:absolute;
+    font-size:45px;
+    z-index:700;
+}
+
+/* SAVE */
+
+#saveMenu{
+    position:fixed;
+    left:50%;
+    top:55px;
+    transform:translateX(-50%);
+    display:none;
+    flex-direction:column;
+    gap:7px;
+    width:240px;
+    padding:10px;
+    background:white;
+    border:4px solid #333;
+    border-radius:15px;
+    z-index:40000;
+}
+
+#saveMenu h3{
+    margin:3px;
+    text-align:center;
+}
+
+#saveMenu button{
+    width:100%;
+}
+
+/* SHOP */
+
+#shop{
+    position:fixed;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    width:360px;
+    max-height:80vh;
+    overflow-y:auto;
+    display:none;
+    background:#fff;
+    border:5px solid #333;
+    border-radius:20px;
+    padding:12px;
+    z-index:45000;
+    box-shadow:0 10px 40px #0008;
+}
+
+#shop h2{
+    text-align:center;
+    margin:5px 0 10px;
+}
+
+.shopCoins{
+    text-align:center;
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.shopItem{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    background:#f1f1f1;
+    border:2px solid #555;
+    border-radius:12px;
+    padding:8px;
+    margin:6px 0;
+}
+
+.shopInfo{
+    flex:1;
+}
+
+.shopName{
+    font-weight:bold;
+    font-size:16px;
+}
+
+.shopDesc{
+    font-size:12px;
+    color:#444;
+}
+
+.shopPrice{
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+.shopItem button{
+    padding:6px 8px;
+}
+
+/* JOYSTICK */
+
+#joystick{
+    position:fixed;
+    left:20px;
+    bottom:20px;
+    width:155px;
+    height:155px;
+    display:none;
+    border:5px solid rgba(255,255,255,.85);
+    border-radius:50%;
+    background:rgba(0,0,0,.25);
+    z-index:50000;
+    touch-action:none;
+}
+
+#joystickStick{
+    position:absolute;
+    width:65px;
+    height:65px;
+    left:40px;
+    top:40px;
+    border:4px solid white;
+    border-radius:50%;
+    background:rgba(255,255,255,.75);
+    pointer-events:none;
+}
+
+/* STARS */
+
+#stars{
+    position:fixed;
+    inset:0;
+    display:none;
+    pointer-events:none;
+    z-index:1;
+}
+
+.star{
+    position:absolute;
+    color:white;
+    font-size:20px;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+    #foodButton{
+        left:5px;
+        top:5px;
+    }
+
+    #shopButton{
+        left:5px;
+        top:52px;
+    }
+
+    #adminButton{
+        left:5px;
+        top:99px;
+    }
+
+    #saveButton{
+        left:5px;
+        top:146px;
+    }
+
+    #eventButton{
+        right:5px;
+        top:5px;
+    }
+
+    #counter{
+        right:5px;
+        left:auto;
+        top:52px;
+    }
+
+    #status{
+        right:5px;
+        top:99px;
+    }
+
+    #shop{
+        width:92vw;
+        max-height:75vh;
+    }
+
+    #feed{
+        width:220px;
+        right:5px;
+        bottom:5px;
+    }
+
+    #joystick{
+        left:15px;
+        bottom:15px;
+        width:170px;
+        height:170px;
+    }
+
+    #joystickStick{
+        width:70px;
+        height:70px;
+        left:45px;
+        top:45px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<button id="foodButton" class="top">🍎 Food Rain</button>
+<button id="shopButton" class="top">🛒 Shop</button>
+<button id="adminButton" class="top">👑 CONTROL ADMIN</button>
+<button id="saveButton" class="top">💾 Save</button>
+<button id="eventButton" class="top">🎲 Event</button>
+
+<div id="counter">Nikos: 0 | 🪙 0</div>
+<div id="status">👑 ADMIN CONTROL</div>
+<div id="message"></div>
+<div id="feed"></div>
+
+<div id="stars"></div>
+
+<!-- HOUSE -->
+<div id="roof"></div>
+<div id="house">
+    <div id="door"></div>
+</div>
+
+<!-- SHOP -->
+<div id="shop">
+
+    <h2>🛒 NIKO SHOP</h2>
+
+    <div class="shopCoins">
+        🪙 Coins: <span id="shopCoins">0</span>
+    </div>
+
+    <div class="shopItem">
+        <div class="shopInfo">
+            <div class="shopName">🧍 Niko</div>
+            <div class="shopDesc">Adds one Niko.</div>
+        </div>
+        <div class="shopPrice">10 🪙</div>
+        <button onclick="buyItem('niko')">BUY</button>
+    </div>
+
+    <div class="shopItem">
+        <div class="shopInfo">
+            <div class="shopName">🍎 Food Pack</div>
+            <div class="shopDesc">Spawns 20 random foods.</div>
+        </div>
+        <div class="shopPrice">15 🪙</div>
+        <button onclick="buyItem('food')">BUY</button>
+    </div>
+
+    <div class="shopItem">
+        <div class="shopInfo">
+            <div class="shopName">⚡ Speed</div>
+            <div class="shopDesc">Makes a random Niko faster.</div>
+        </div>
+        <div class="shopPrice">25 🪙</div>
+        <button onclick="buyItem('speed')">BUY</button>
+    </div>
+
+    <div class="shopItem">
+        <div class="shopInfo">
+            <div class="shopName">❤️ Friendship</div>
+            <div class="shopDesc">Makes two Nikos meet.</div>
+        </div>
+        <div class="shopPrice">30 🪙</div>
+        <button onclick="buyItem('friend')">BUY</button>
+    </div>
+
+    <div class="shopItem">
+        <div class="shopInfo">
+            <div class="shopName">🛏️ Sleepy Bed</div>
+            <div class="shopDesc">Makes a random Niko sleep.</div>
+        </div>
+        <div class="shopPrice">40 🪙</div>
+        <button onclick="buyItem('bed')">BUY</button>
+    </div>
+
+    <div class="shopItem">
+        <div class="shopInfo">
+            <div class="shopName">🌈 Rainbow Food</div>
+            <div class="shopDesc">Creates special rainbow food.</div>
+        </div>
+        <div class="shopPrice">50 🪙</div>
+        <button onclick="buyItem('rainbow')">BUY</button>
+    </div>
+
+    <div class="shopItem">
+        <div class="shopInfo">
+            <div class="shopName">✨ Shiny Niko</div>
+            <div class="shopDesc">Makes a Niko shiny.</div>
+        </div>
+        <div class="shopPrice">75 🪙</div>
+        <button onclick="buyItem('shiny')">BUY</button>
+    </div>
+
+    <div class="shopItem">
+        <div class="shopInfo">
+            <div class="shopName">🧲 Coin Magnet</div>
+            <div class="shopDesc">Nikos collect nearby coins automatically.</div>
+        </div>
+        <div class="shopPrice">80 🪙</div>
+        <button onclick="buyItem('magnet')">BUY</button>
+    </div>
+
+    <div class="shopItem">
+        <div class="shopInfo">
+            <div class="shopName">🏠 Bigger House</div>
+            <div class="shopDesc">Upgrades the Niko house.</div>
+        </div>
+        <div class="shopPrice">100 🪙</div>
+        <button onclick="buyItem('house')">BUY</button>
+    </div>
+
+    <div class="shopItem">
+        <div class="shopInfo">
+            <div class="shopName">👑 Golden Niko</div>
+            <div class="shopDesc">Adds another Golden Niko.</div>
+        </div>
+        <div class="shopPrice">250 🪙</div>
+        <button onclick="buyItem('gold')">BUY</button>
+    </div>
+
+    <button onclick="closeShop()" style="width:100%;margin-top:8px">
+        ❌ Close Shop
+    </button>
+
+</div>
+
+<!-- SAVE MENU -->
+<div id="saveMenu">
+
+    <h3>💾 NIKO SAVE</h3>
+
+    <button id="downloadSave">💾 Download Save</button>
+    <button id="loadSave">📂 Load Save</button>
+    <button id="removeSave">🗑️ Remove Save</button>
+    <button id="blankWorld">⬜ Blank World</button>
+
+</div>
+
+<!-- JOYSTICK -->
+<div id="joystick">
+    <div id="joystickStick"></div>
+</div>
+
+<script>
+
+/* =========================================================
+   DATA
+========================================================= */
+
+const nikos=[];
+const foods=[];
+const coins=[];
+const balloons=[];
+const frogs=[];
+const bees=[];
+
+let coinsCollected=0;
+let adminControlled=false;
+let foodRain=false;
+let foodTimer=null;
+let nightMode=false;
+let coinMagnet=false;
+let houseLevel=1;
+
+let mouseX=innerWidth/2;
+let mouseY=innerHeight/2;
+
+document.addEventListener("mousemove",e=>{
+    mouseX=e.clientX;
+    mouseY=e.clientY;
+});
+
+/* =========================================================
+   FOOD
+========================================================= */
+
+const foodTypes=[
+    "🍎","🍌","🍕","🍔","🍟","🍩",
+    "🍪","🍰","🧁","🍉","🍓","🍇",
+    "🥞","🍗","🍚","🥪","🌮","🍜",
+    "🥕","🌽","🍫","🍿","🥨","🍒"
+];
+
+/* =========================================================
+   TALK
+========================================================= */
+
+const normalTalk=[
+    "heyyy!","FOOD!!","nom nom!","hello!",
+    "hehe!","yay!","NIKO!","WEEEE!",
+    "friend!","I'm hungry...","look!","what was that?!"
+];
+
+const goldenTalk=[
+    "I AM GOLDEN! 👑",
+    "ADMIN NIKO!",
+    "FOOD FOR EVERYONE!",
+    "MORE NIKOS!",
+    "I'M SHINY!",
+    "NIKO POWER!",
+    "ALL HAIL NIKO!",
+    "FOLLOW ME!"
+];
+
+/* =========================================================
+   UTILITY
+========================================================= */
+
+function random(min,max){
+    return Math.random()*(max-min)+min;
+}
+
+function message(text){
+
+    const box=document.getElementById("message");
+
+    box.textContent=text;
+    box.style.display="block";
+
+    setTimeout(()=>{
+        box.style.display="none";
+    },1800);
+}
+
+function feed(text){
+
+    const item=document.createElement("div");
+
+    item.className="feedItem";
+    item.textContent=text;
+
+    document.getElementById("feed").prepend(item);
+
+    setTimeout(()=>item.remove(),6500);
+}
+
+function updateCounter(){
+
+    document.getElementById("counter").textContent=
+        "Nikos: "+
+        nikos.length+
+        " | 🪙 "+
+        coinsCollected;
+
+    document.getElementById("shopCoins").textContent=
+        coinsCollected;
+}
+
+function goldenNiko(){
+
+    return nikos.find(n=>n.golden);
+}
+
+/* =========================================================
+   CREATE NIKO
+========================================================= */
+
+function createNiko(x,y,golden=false){
+
+    const img=document.createElement("img");
+
+    img.src="Niko.png";
+    img.className="niko";
+
+    if(golden)
+        img.classList.add("golden");
+
+    document.body.appendChild(img);
+
+    const speech=document.createElement("div");
+
+    speech.className=
+        golden ? "speech goldSpeech":"speech";
+
+    speech.style.display="none";
+
+    document.body.appendChild(speech);
+
+    let label=null;
+
+    if(golden){
+
+        label=document.createElement("div");
+
+        label.className="goldLabel";
+        label.textContent="👑 GOLDEN NIKO";
+
+        document.body.appendChild(label);
+    }
+
+    const zzz=document.createElement("div");
+
+    zzz.textContent="Zzz...";
+    zzz.style.display="none";
+    zzz.style.position="absolute";
+    zzz.style.fontSize="28px";
+    zzz.style.fontWeight="bold";
+    zzz.style.zIndex="1000";
+
+    document.body.appendChild(zzz);
+
+    const niko={
+        img,
+        speech,
+        label,
+        zzz,
+
+        x,
+        y,
+
+        vx:random(-2.2,2.2),
+        vy:random(-2.2,2.2),
+
+        golden,
+        dragging:false,
+        sleeping:false,
+        eating:false,
+        tiny:false,
+        fast:false,
+        panic:false,
+
+        speedTimer:0,
+        speechTimer:0,
+
+        friend:null,
+        friendTimer:0
+    };
+
+    nikos.push(niko);
+
+    /* DRAG */
+
+    img.addEventListener("pointerdown",e=>{
+
+        if(adminControlled && niko.golden)
+            return;
+
+        niko.dragging=true;
+
+        img.setPointerCapture(e.pointerId);
+
+        niko.dragOffsetX=e.clientX-niko.x;
+        niko.dragOffsetY=e.clientY-niko.y;
+    });
+
+    img.addEventListener("pointermove",e=>{
+
+        if(!niko.dragging)
+            return;
+
+        niko.x=e.clientX-niko.dragOffsetX;
+        niko.y=e.clientY-niko.dragOffsetY;
+
+        keepInside(niko);
+        position(niko);
+    });
+
+    img.addEventListener("pointerup",()=>{
+        niko.dragging=false;
+    });
+
+    updateCounter();
+
+    return niko;
+}
+
+/* =========================================================
+   SPEECH
+========================================================= */
+
+function say(niko,text){
+
+    niko.speech.textContent=text;
+    niko.speech.style.display="block";
+    niko.speechTimer=130;
+}
+
+/* =========================================================
+   FOOD
+========================================================= */
+
+function spawnFood(
+    x=random(20,innerWidth-80),
+    y=random(90,innerHeight-180)
+){
+
+    const el=document.createElement("div");
+
+    el.className="food";
+
+    const emoji=
+        foodTypes[
+            Math.floor(
+                Math.random()*foodTypes.length
+            )
+        ];
+
+    el.textContent=emoji;
+
+    el.style.left=x+"px";
+    el.style.top=y+"px";
+
+    document.body.appendChild(el);
+
+    foods.push({
+        el,
+        x,
+        y,
+        emoji,
+        falling:y<0
+    });
+}
+
+function closestFood(niko){
+
+    let closest=null;
+    let distance=Infinity;
+
+    for(const food of foods){
+
+        const d=Math.hypot(
+            food.x-niko.x,
+            food.y-niko.y
+        );
+
+        if(d<distance){
+
+            distance=d;
+            closest=food;
+        }
+    }
+
+    return closest;
+}
+
+function eatFood(niko,food){
+
+    if(!food || niko.eating)
+        return;
+
+    niko.eating=true;
+
+    say(
+        niko,
+        niko.golden
+            ? "GOLDEN NOM! 👑"
+            : "nom nom!"
+    );
+
+    setTimeout(()=>{
+
+        food.el.remove();
+
+        const index=foods.indexOf(food);
+
+        if(index>=0)
+            foods.splice(index,1);
+
+        niko.eating=false;
+
+        say(niko,"CRUNCH!");
+
+        feed(
+            (niko.golden
+                ? "👑 Golden Niko ate "
+                : "😋 Niko ate ")+
+            food.emoji+
+            " — CRUNCH!"
+        );
+
+        const friend=nikos.find(
+            n=>n!==niko && !n.sleeping
+        );
+
+        if(friend){
+
+            niko.friend=friend;
+            niko.friendTimer=180;
+        }
+
+    },350);
+}
+
+/* =========================================================
+   FOOD RAIN
+========================================================= */
+
+document.getElementById("foodButton").onclick=()=>{
+
+    if(foodRain){
+
+        foodRain=false;
+
+        clearInterval(foodTimer);
+
+        document.getElementById("foodButton").textContent=
+            "🍎 Food Rain";
+
+        feed("🛑 Food rain stopped.");
+
+        return;
+    }
+
+    foodRain=true;
+
+    document.getElementById("foodButton").textContent=
+        "🛑 Stop Food";
+
+    message("🌧️ FOOD RAIN!");
+
+    foodTimer=setInterval(()=>{
+
+        for(let i=0;i<3;i++)
+            spawnFood(random(10,innerWidth-70),-60);
+
+    },700);
+};
+
+/* =========================================================
+   COINS
+========================================================= */
+
+function spawnCoin(){
+
+    const el=document.createElement("div");
+
+    el.className="coin";
+    el.textContent="🪙";
+
+    const coin={
+        el,
+        x:random(20,innerWidth-70),
+        y:random(90,innerHeight-180)
+    };
+
+    el.style.left=coin.x+"px";
+    el.style.top=coin.y+"px";
+
+    document.body.appendChild(el);
+    coins.push(coin);
+}
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+function spawnBalloon(){
+
+    const el=document.createElement("div");
+
+    el.className="balloon";
+    el.textContent="🎈";
+
+    const b={
+        el,
+        x:random(20,innerWidth-70),
+        y:innerHeight+50,
+        vx:random(-1,1),
+        vy:random(-2,-.7)
+    };
+
+    document.body.appendChild(el);
+    balloons.push(b);
+}
+
+function spawnFrog(){
+
+    const el=document.createElement("div");
+
+    el.className="frog";
+    el.textContent="🐸";
+
+    const frog={
+        el,
+        x:random(20,innerWidth-80),
+        y:random(100,innerHeight-180),
+        vx:random(-2,2),
+        vy:random(-2,2)
+    };
+
+    document.body.appendChild(el);
+    frogs.push(frog);
+
+    feed("🐸 A frog appeared!");
+}
+
+function spawnBee(){
+
+    const el=document.createElement("div");
+
+    el.className="bee";
+    el.textContent="🐝";
+
+    const bee={
+        el,
+        x:random(20,innerWidth-70),
+        y:random(90,innerHeight-170),
+        vx:random(-3,3),
+        vy:random(-3,3)
+    };
+
+    document.body.appendChild(el);
+    bees.push(bee);
+
+    feed("🐝 BEE EVENT!");
+}
+
+function speedBoost(niko){
+
+    niko.fast=true;
+    niko.speedTimer=500;
+
+    feed(
+        (niko.golden?"👑 ":"💨 ")+
+        "Niko got SPEED!"
+    );
+}
+
+function tinyNiko(niko){
+
+    niko.tiny=true;
+    niko.img.classList.add("tiny");
+
+    setTimeout(()=>{
+
+        niko.tiny=false;
+        niko.img.classList.remove("tiny");
+
+    },7000);
+}
+
+function sleepNiko(niko){
+
+    if(niko.golden && adminControlled)
+        return;
+
+    niko.sleeping=true;
+
+    niko.vx=0;
+    niko.vy=0;
+
+    niko.zzz.style.display="block";
+
+    say(niko,"I'm sleepy...");
+
+    setTimeout(()=>{
+
+        niko.sleeping=false;
+
+        niko.zzz.style.display="none";
+
+        niko.vx=random(-2,2);
+        niko.vy=random(-2,2);
+
+        say(niko,"GOOD MORNING!");
+
+    },6000);
+}
+
+function panicEvent(){
+
+    message("😂 NIKO PANIC!");
+
+    feed("😂 EVERYONE PANIC!");
+
+    for(const niko of nikos){
+
+        niko.panic=true;
+
+        niko.img.classList.add("panic");
+
+        niko.vx=random(-7,7);
+        niko.vy=random(-7,7);
+
+        say(niko,"AAAAAA!");
+    }
+
+    setTimeout(()=>{
+
+        for(const niko of nikos){
+
+            niko.panic=false;
+            niko.img.classList.remove("panic");
+
+            niko.vx=random(-2,2);
+            niko.vy=random(-2,2);
+        }
+
+    },5000);
+}
+
+function nightEvent(){
+
+    nightMode=!nightMode;
+
+    document.body.classList.toggle("night",nightMode);
+
+    document.getElementById("stars").style.display=
+        nightMode ? "block":"none";
+
+    if(nightMode){
+
+        for(const niko of nikos){
+
+            if(!niko.golden){
+
+                setTimeout(
+                    ()=>sleepNiko(niko),
+                    random(300,2500)
+                );
+            }
+        }
+
+        feed("🌙 NIGHT MODE!");
+        message("🌙 BEDTIME!");
+
+    }else{
+
+        feed("☀️ MORNING!");
+        message("☀️ GOOD MORNING!");
+    }
+}
+
+function rainbowEvent(){
+
+    const rainbow=document.createElement("div");
+
+    rainbow.textContent="🌈🌈🌈🌈🌈";
+
+    rainbow.style.position="fixed";
+    rainbow.style.left="50%";
+    rainbow.style.top="25%";
+    rainbow.style.transform="translateX(-50%)";
+    rainbow.style.fontSize="100px";
+    rainbow.style.zIndex="2000";
+
+    document.body.appendChild(rainbow);
+
+    for(const niko of nikos)
+        say(niko,"WOW!!! 🌈");
+
+    message("🌈 RAINBOW!");
+
+    setTimeout(()=>rainbow.remove(),5000);
+}
+
+function birthdayEvent(){
+
+    const cake=document.createElement("div");
+
+    cake.textContent="🎂";
+
+    cake.style.position="fixed";
+    cake.style.left="50%";
+    cake.style.top="50%";
+    cake.style.transform="translate(-50%,-50%)";
+    cake.style.fontSize="100px";
+    cake.style.zIndex="2000";
+
+    document.body.appendChild(cake);
+
+    for(const niko of nikos)
+        say(niko,"HAPPY BIRTHDAY! 🎂");
+
+    message("🥳 NIKO BIRTHDAY!");
+
+    setTimeout(()=>cake.remove(),5000);
+}
+
+function raceEvent(){
+
+    if(nikos.length<2){
+
+        message("Need 2 Nikos! 🧍🧍");
+        return;
+    }
+
+    const a=nikos[
+        Math.floor(Math.random()*nikos.length)
+    ];
+
+    let b=nikos[
+        Math.floor(Math.random()*nikos.length)
+    ];
+
+    while(b===a){
+
+        b=nikos[
+            Math.floor(Math.random()*nikos.length)
+        ];
+    }
+
+    say(a,"RACE!!! 🏁");
+    say(b,"RACE!!! 🏁");
+
+    a.x=20;
+    b.x=20;
+
+    a.vx=8;
+    b.vx=6;
+
+    message("🏁 NIKO RACE!");
+
+    setTimeout(()=>{
+
+        a.vx=random(-2,2);
+        b.vx=random(-2,2);
+
+        say(
+            a,
+            a.x>b.x
+                ? "I WON! 🏆"
+                : "NOOO!"
+        );
+
+        say(
+            b,
+            b.x>a.x
+                ? "I WON! 🏆"
+                : "NOOO!"
+        );
+
+    },4000);
+}
+
+/* =========================================================
+   RANDOM EVENTS
+========================================================= */
+
+const events=[
+
+    ()=>{
+        for(let i=0;i<8;i++) spawnBalloon();
+        message("🎈 BALLOON PARTY!");
+    },
+
+    ()=>{
+        for(let i=0;i<10;i++) spawnCoin();
+        message("🪙 COIN RAIN!");
+    },
+
+    ()=>{
+        for(let i=0;i<8;i++) spawnFood();
+        message("🍕 FOOD PARTY!");
+    },
+
+    ()=>{
+        spawnFrog();
+        message("🐸 FROG FRIEND!");
+    },
+
+    ()=>{
+        spawnBee();
+        message("🐝 BEEEE!");
+    },
+
+    panicEvent,
+
+    ()=>{
+        for(const niko of nikos)
+            speedBoost(niko);
+
+        message("💨 SPEED MODE!");
+    },
+
+    ()=>{
+        for(const niko of nikos)
+            tinyNiko(niko);
+
+        message("😂 TINY NIKOS!");
+    },
+
+    nightEvent,
+    raceEvent,
+    birthdayEvent,
+    rainbowEvent
+
+];
+
+document.getElementById("eventButton").onclick=()=>{
+
+    events[
+        Math.floor(
+            Math.random()*events.length
+        )
+    ]();
+};
+
+/* =========================================================
+   SHOP
+========================================================= */
+
+document.getElementById("shopButton").onclick=()=>{
+    document.getElementById("shop").style.display="block";
+    updateCounter();
+};
+
+function closeShop(){
+
+    document.getElementById("shop").style.display="none";
+}
+
+const prices={
+    niko:10,
+    food:15,
+    speed:25,
+    friend:30,
+    bed:40,
+    rainbow:50,
+    shiny:75,
+    magnet:80,
+    house:100,
+    gold:250
+};
+
+function buyItem(item){
+
+    const price=prices[item];
+
+    if(coinsCollected<price){
+
+        message("😭 Not enough coins!");
+
+        feed(
+            "Need "+
+            (price-coinsCollected)+
+            " more 🪙."
+        );
+
+        return;
+    }
+
+    coinsCollected-=price;
+
+    updateCounter();
+
+    switch(item){
+
+        case "niko":
+
+            createNiko(
+                random(20,innerWidth-120),
+                random(100,innerHeight-190)
+            );
+
+            feed("🧍 NEW NIKO BOUGHT!");
+
+            break;
+
+        case "food":
+
+            for(let i=0;i<20;i++)
+                spawnFood();
+
+            feed("🍎 FOOD PACK BOUGHT!");
+
+            break;
+
+        case "speed":{
+
+            if(!nikos.length){
+
+                coinsCollected+=price;
+                updateCounter();
+
+                message("No Nikos!");
+
+                return;
+            }
+
+            const niko=
+                nikos[
+                    Math.floor(
+                        Math.random()*nikos.length
+                    )
+                ];
+
+            speedBoost(niko);
+
+            feed("⚡ SPEED UPGRADE!");
+
+            break;
+        }
+
+        case "friend":{
+
+            if(nikos.length<2){
+
+                coinsCollected+=price;
+                updateCounter();
+
+                message("Need 2 Nikos!");
+
+                return;
+            }
+
+            const a=
+                nikos[
+                    Math.floor(
+                        Math.random()*nikos.length
+                    )
+                ];
+
+            let b=
+                nikos[
+                    Math.floor(
+                        Math.random()*nikos.length
+                    )
+                ];
+
+            while(b===a){
+
+                b=
+                    nikos[
+                        Math.floor(
+                            Math.random()*nikos.length
+                        )
+                    ];
+            }
+
+            a.friend=b;
+
+            a.friendTimer=500;
+
+            b.friend=a;
+
+            b.friendTimer=500;
+
+            say(a,"FRIEND! ❤️");
+            say(b,"FRIEND! ❤️");
+
+            feed("❤️ FRIENDSHIP BOOST!");
+
+            break;
+        }
+
+        case "bed":{
+
+            if(!nikos.length){
+
+                coinsCollected+=price;
+                updateCounter();
+
+                message("No Nikos!");
+
+                return;
+            }
+
+            const niko=
+                nikos[
+                    Math.floor(
+                        Math.random()*nikos.length
+                    )
+                ];
+
+            sleepNiko(niko);
+
+            feed("🛏️ BED BOUGHT!");
+
+            break;
+        }
+
+        case "rainbow":{
+
+            const el=
+                document.createElement("div");
+
+            el.className="food";
+            el.textContent="🌈";
+
+            const x=
+                random(20,innerWidth-80);
+
+            const y=
+                random(90,innerHeight-180);
+
+            el.style.left=x+"px";
+            el.style.top=y+"px";
+
+            document.body.appendChild(el);
+
+            foods.push({
+                el,
+                x,
+                y,
+                emoji:"🌈",
+                falling:false
+            });
+
+            feed("🌈 RAINBOW FOOD!");
+
+            break;
+        }
+
+        case "shiny":{
+
+            if(!nikos.length){
+
+                coinsCollected+=price;
+                updateCounter();
+
+                message("No Nikos!");
+
+                return;
+            }
+
+            const niko=
+                nikos[
+                    Math.floor(
+                        Math.random()*nikos.length
+                    )
+                ];
+
+            niko.img.classList.add("shiny");
+
+            say(niko,"I'M SHINY! ✨");
+
+            feed("✨ SHINY NIKO!");
+
+            break;
+        }
+
+        case "magnet":
+
+            coinMagnet=true;
+
+            feed("🧲 COIN MAGNET ACTIVATED!");
+
+            message("🧲 MAGNET!");
+
+            break;
+
+        case "house":
+
+            houseLevel++;
+
+            const house=
+                document.getElementById("house");
+
+            house.style.width=
+                (300+houseLevel*30)+"px";
+
+            house.style.height=
+                (190+houseLevel*15)+"px";
+
+            feed("🏠 HOUSE UPGRADED!");
+
+            break;
+
+        case "gold":
+
+            createNiko(
+                random(20,innerWidth-120),
+                random(100,innerHeight-190),
+                true
+            );
+
+            feed("👑 GOLDEN NIKO BOUGHT!");
+
+            message("👑 GOLDEN NIKO!");
+
+            break;
+    }
+
+    updateCounter();
+}
+
+/* =========================================================
+   ADMIN CONTROL
+========================================================= */
+
+document.getElementById("adminButton").onclick=()=>{
+
+    const admin=goldenNiko();
+
+    if(!admin){
+
+        message("👑 Golden Niko is missing!");
+
+        return;
+    }
+
+    adminControlled=!adminControlled;
+
+    const button=
+        document.getElementById("adminButton");
+
+    const status=
+        document.getElementById("status");
+
+    const joystick=
+        document.getElementById("joystick");
+
+    if(adminControlled){
+
+        button.textContent="🛑 STOP ADMIN";
+
+        status.style.display="block";
+
+        if("ontouchstart" in window)
+            joystick.style.display="block";
+
+        say(admin,"YOU CONTROL ME! 👑");
+
+        feed("👑 ADMIN CONTROL ON!");
+
+    }else{
+
+        button.textContent="👑 CONTROL ADMIN";
+
+        status.style.display="none";
+        joystick.style.display="none";
+
+        joystickX=0;
+        joystickY=0;
+
+        resetJoystick();
+
+        admin.vx=random(-2,2);
+        admin.vy=random(-2,2);
+
+        say(admin,"AI CONTROL BACK!");
+    }
+};
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+const keys={};
+
+document.addEventListener("keydown",e=>{
+
+    const key=e.key.toLowerCase();
+
+    if([
+        "w","a","s","d",
+        "arrowup","arrowdown",
+        "arrowleft","arrowright"
+    ].includes(key)){
+
+        keys[key]=true;
+
+        document.getElementById("joystick")
+            .style.display="none";
+
+        e.preventDefault();
+    }
+
+    /* E TELEPORT */
+
+    if(
+        key==="e" &&
+        adminControlled
+    ){
+
+        const admin=goldenNiko();
+
+        if(!admin)
+            return;
+
+        admin.x=mouseX-52;
+        admin.y=mouseY-52;
+
+        keepInside(admin);
+        position(admin);
+
+        say(admin,"TELEPORT! ✨");
+
+        feed("👑 Golden Niko teleported!");
+    }
+});
+
+document.addEventListener("keyup",e=>{
+
+    keys[
+        e.key.toLowerCase()
+    ]=false;
+});
+
+function keyboardControl(admin){
+
+    if(!adminControlled)
+        return;
+
+    const speed=admin.fast?9:6;
+
+    let dx=0;
+    let dy=0;
+
+    if(keys.w) dy--;
+    if(keys.s) dy++;
+    if(keys.a) dx--;
+    if(keys.d) dx++;
+
+    if(keys.arrowup) dy--;
+    if(keys.arrowdown) dy++;
+    if(keys.arrowleft) dx--;
+    if(keys.arrowright) dx++;
+
+    if(dx!==0 || dy!==0){
+
+        const length=
+            Math.hypot(dx,dy);
+
+        dx/=length;
+        dy/=length;
+
+        admin.x+=dx*speed;
+        admin.y+=dy*speed;
+
+        keepInside(admin);
+    }
+}
+
+/* =========================================================
+   JOYSTICK
+========================================================= */
+
+const joystick=
+    document.getElementById("joystick");
+
+const joystickStick=
+    document.getElementById("joystickStick");
+
+let joystickActive=false;
+let joystickX=0;
+let joystickY=0;
+let joystickPointer=null;
+
+const joystickRadius=52;
+
+joystick.addEventListener("pointerdown",e=>{
+
+    if(!adminControlled)
+        return;
+
+    joystickActive=true;
+    joystickPointer=e.pointerId;
+
+    joystick.setPointerCapture(e.pointerId);
+
+    moveJoystick(e);
+});
+
+joystick.addEventListener("pointermove",e=>{
+
+    if(
+        !joystickActive ||
+        e.pointerId!==joystickPointer
+    )
+        return;
+
+    moveJoystick(e);
+});
+
+function moveJoystick(e){
+
+    const rect=
+        joystick.getBoundingClientRect();
+
+    const centerX=
+        rect.left+
+        rect.width/2;
+
+    const centerY=
+        rect.top+
+        rect.height/2;
+
+    let dx=e.clientX-centerX;
+    let dy=e.clientY-centerY;
+
+    const distance=
+        Math.hypot(dx,dy);
+
+    if(distance>joystickRadius){
+
+        dx=
+            dx/distance*
+            joystickRadius;
+
+        dy=
+            dy/distance*
+            joystickRadius;
+    }
+
+    joystickX=
+        dx/joystickRadius;
+
+    joystickY=
+        dy/joystickRadius;
+
+    const stickSize=
+        joystickStick.offsetWidth;
+
+    const center=
+        rect.width/2-
+        stickSize/2;
+
+    joystickStick.style.left=
+        center+dx+"px";
+
+    joystickStick.style.top=
+        center+dy+"px";
+}
+
+function stopJoystick(){
+
+    joystickActive=false;
+    joystickPointer=null;
+
+    joystickX=0;
+    joystickY=0;
+
+    resetJoystick();
+}
+
+joystick.addEventListener(
+    "pointerup",
+    stopJoystick
+);
+
+joystick.addEventListener(
+    "pointercancel",
+    stopJoystick
+);
+
+function resetJoystick(){
+
+    const stickSize=
+        joystickStick.offsetWidth;
+
+    const rect=
+        joystick.getBoundingClientRect();
+
+    joystickStick.style.left=
+        (
+            rect.width/2-
+            stickSize/2
+        )+"px";
+
+    joystickStick.style.top=
+        (
+            rect.height/2-
+            stickSize/2
+        )+"px";
+}
+
+function controlAdmin(admin){
+
+    const speed=admin.fast?9:6;
+
+    admin.x+=joystickX*speed;
+    admin.y+=joystickY*speed;
+
+    keepInside(admin);
+}
+
+/* =========================================================
+   SAVE MENU
+========================================================= */
+
+document.getElementById("saveButton").onclick=()=>{
+
+    const menu=document.getElementById("saveMenu");
+
+    menu.style.display=
+        menu.style.display==="flex"
+            ?"none"
+            :"flex";
+};
+
+function makeSave(){
+
+    return {
+
+        version:9,
+
+        coins:coinsCollected,
+
+        night:nightMode,
+
+        coinMagnet,
+
+        houseLevel,
+
+        nikos:nikos.map(n=>({
+
+            x:n.x,
+            y:n.y,
+            vx:n.vx,
+            vy:n.vy,
+            golden:n.golden,
+            tiny:n.tiny,
+            fast:n.fast,
+            shiny:n.img.classList.contains("shiny")
+
+        })),
+
+        foods:foods.map(f=>({
+
+            x:f.x,
+            y:f.y,
+            emoji:f.emoji
+
+        }))
+
+    };
+}
+
+/* DOWNLOAD */
+
+document.getElementById("downloadSave").onclick=()=>{
+
+    const blob=new Blob(
+        [
+            JSON.stringify(
+                makeSave(),
+                null,
+                2
+            )
+        ],
+        {type:"application/json"}
+    );
+
+    const url=
+        URL.createObjectURL(blob);
+
+    const a=
+        document.createElement("a");
+
+    a.href=url;
+    a.download="NikoSave.niko";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+    feed("💾 SAVE DOWNLOADED!");
+};
+
+/* CLEAR */
+
+function clearWorld(){
+
+    while(nikos.length){
+
+        const n=nikos.pop();
+
+        n.img.remove();
+        n.speech.remove();
+        n.zzz.remove();
+
+        if(n.label)
+            n.label.remove();
+    }
+
+    while(foods.length)
+        foods.pop().el.remove();
+
+    while(coins.length)
+        coins.pop().el.remove();
+
+    while(balloons.length)
+        balloons.pop().el.remove();
+
+    while(frogs.length)
+        frogs.pop().el.remove();
+
+    while(bees.length)
+        bees.pop().el.remove();
+
+    updateCounter();
+}
+
+/* LOAD */
+
+document.getElementById("loadSave").onclick=()=>{
+
+    const input=document.createElement("input");
+
+    input.type="file";
+    input.accept=".niko,.json";
+
+    input.onchange=e=>{
+
+        const file=e.target.files[0];
+
+        if(!file)
+            return;
+
+        const reader=new FileReader();
+
+        reader.onload=()=>{
+
+            try{
+
+                const data=
+                    JSON.parse(
+                        reader.result
+                    );
+
+                if(!Array.isArray(data.nikos))
+                    throw new Error();
+
+                clearWorld();
+
+                coinsCollected=
+                    data.coins||0;
+
+                coinMagnet=
+                    Boolean(
+                        data.coinMagnet
+                    );
+
+                houseLevel=
+                    data.houseLevel||1;
+
+                for(
+                    const saved
+                    of data.nikos
+                ){
+
+                    const niko=
+                        createNiko(
+                            saved.x,
+                            saved.y,
+                            saved.golden
+                        );
+
+                    niko.vx=
+                        saved.vx||
+                        random(-2,2);
+
+                    niko.vy=
+                        saved.vy||
+                        random(-2,2);
+
+                    if(saved.tiny)
+                        tinyNiko(niko);
+
+                    if(saved.fast)
+                        speedBoost(niko);
+
+                    if(saved.shiny)
+                        niko.img.classList.add(
+                            "shiny"
+                        );
+                }
+
+                if(Array.isArray(data.foods)){
+
+                    for(
+                        const savedFood
+                        of data.foods
+                    ){
+
+                        const el=
+                            document.createElement(
+                                "div"
+                            );
+
+                        el.className="food";
+                        el.textContent=
+                            savedFood.emoji;
+
+                        el.style.left=
+                            savedFood.x+"px";
+
+                        el.style.top=
+                            savedFood.y+"px";
+
+                        document.body.appendChild(el);
+
+                        foods.push({
+
+                            el,
+
+                            x:savedFood.x,
+                            y:savedFood.y,
+
+                            emoji:savedFood.emoji
+
+                        });
+                    }
+                }
+
+                if(
+                    Boolean(data.night)!==
+                    nightMode
+                )
+                    nightEvent();
+
+                updateCounter();
+
+                feed("📂 SAVE LOADED!");
+
+            }
+            catch{
+
+                alert(
+                    "😭 Invalid Niko save!"
+                );
+            }
+        };
+
+        reader.readAsText(file);
+    };
+
+    input.click();
+};
+
+/* REMOVE SAVE */
+
+document.getElementById("removeSave").onclick=()=>{
+
+    if(confirm("Delete the browser save?")){
+
+        localStorage.removeItem("NikoSave");
+
+        feed("🗑️ SAVE REMOVED!");
+    }
+};
+
+/* BLANK */
+
+document.getElementById("blankWorld").onclick=()=>{
+
+    if(!confirm("Make the world completely blank?"))
+        return;
+
+    clearWorld();
+
+    feed("⬜ BLANK WORLD!");
+};
+
+/* =========================================================
+   RANDOM TALK
+========================================================= */
+
+setInterval(()=>{
+
+    if(!nikos.length)
+        return;
+
+    const niko=
+        nikos[
+            Math.floor(
+                Math.random()*nikos.length
+            )
+        ];
+
+    if(
+        niko.sleeping||
+        niko.eating||
+        niko.speechTimer>0
+    )
+        return;
+
+    const list=
+        niko.golden
+            ?goldenTalk
+            :normalTalk;
+
+    say(
+        niko,
+        list[
+            Math.floor(
+                Math.random()*list.length
+            )
+        ]
+    );
+
+},4500);
+
+/* =========================================================
+   GAME LOOP
+========================================================= */
+
+function update(){
+
+    const admin=goldenNiko();
+
+    if(
+        admin &&
+        adminControlled
+    ){
+
+        keyboardControl(admin);
+
+        if(
+            joystickActive||
+            joystickX!==0||
+            joystickY!==0
+        )
+            controlAdmin(admin);
+    }
+
+    /* NIKOS */
+
+    for(const niko of nikos){
+
+        if(niko.speechTimer>0)
+            niko.speechTimer--;
+        else
+            niko.speech.style.display="none";
+
+        if(
+            niko.golden &&
+            adminControlled
+        ){
+
+            position(niko);
+            continue;
+        }
+
+        if(niko.dragging){
+
+            position(niko);
+            continue;
+        }
+
+        if(niko.sleeping){
+
+            position(niko);
+            continue;
+        }
+
+        /* FRIEND */
+
+        if(
+            niko.friend &&
+            niko.friend!==niko
+        ){
+
+            const friend=niko.friend;
+
+            const dx=
+                friend.x-niko.x;
+
+            const dy=
+                friend.y-niko.y;
+
+            const d=
+                Math.hypot(dx,dy);
+
+            if(d>85){
+
+                niko.x+=
+                    dx/d*3;
+
+                niko.y+=
+                    dy/d*3;
+
+            }else{
+
+                say(
+                    niko,
+                    "HI FRIEND! ❤️"
+                );
+
+                niko.friend=null;
+            }
+
+        }else{
+
+            /* FOOD */
+
+            const food=
+                closestFood(niko);
+
+            if(food){
+
+                const dx=
+                    food.x-niko.x;
+
+                const dy=
+                    food.y-niko.y;
+
+                const d=
+                    Math.hypot(dx,dy);
+
+                const speed=
+                    niko.fast
+                        ?6
+                        :niko.golden
+                            ?3.2
+                            :2.1;
+
+                if(d<65){
+
+                    eatFood(
+                        niko,
+                        food
+                    );
+
+                }else{
+
+                    niko.x+=
+                        dx/d*speed;
+
+                    niko.y+=
+                        dy/d*speed;
+                }
+
+            }else{
+
+                const speed=
+                    niko.fast
+                        ?3
+                        :1;
+
+                niko.x+=
+                    niko.vx*speed;
+
+                niko.y+=
+                    niko.vy*speed;
+
+                keepInside(niko);
+            }
+        }
+
+        /* SPEED TIMER */
+
+        if(niko.speedTimer>0){
+
+            niko.speedTimer--;
+
+            if(niko.speedTimer<=0)
+                niko.fast=false;
+        }
+
+        position(niko);
+    }
+
+    /* FALLING FOOD */
+
+    for(const food of foods){
+
+        if(food.falling){
+
+            food.y+=4;
+
+            food.el.style.top=
+                food.y+"px";
+
+            if(
+                food.y>
+                innerHeight-150
+            )
+                food.falling=false;
+        }
+    }
+
+    /* BALLOONS */
+
+    for(
+        let i=balloons.length-1;
+        i>=0;
+        i--
+    ){
+
+        const b=balloons[i];
+
+        b.x+=b.vx;
+        b.y+=b.vy;
+
+        b.el.style.left=b.x+"px";
+        b.el.style.top=b.y+"px";
+
+        if(b.y<-100){
+
+            b.el.remove();
+
+            balloons.splice(i,1);
+        }
+    }
+
+    /* COINS */
+
+    for(
+        let i=coins.length-1;
+        i>=0;
+        i--
+    ){
+
+        const c=coins[i];
+
+        for(const niko of nikos){
+
+            let distance=
+                Math.hypot(
+                    c.x-niko.x,
+                    c.y-niko.y
+                );
+
+            if(
+                coinMagnet &&
+                distance<250
+            ){
+
+                c.x+=
+                    (niko.x-c.x)/
+                    Math.max(distance,1)*
+                    4;
+
+                c.y+=
+                    (niko.y-c.y)/
+                    Math.max(distance,1)*
+                    4;
+
+                c.el.style.left=
+                    c.x+"px";
+
+                c.el.style.top=
+                    c.y+"px";
+
+                distance=
+                    Math.hypot(
+                        c.x-niko.x,
+                        c.y-niko.y
+                    );
+            }
+
+            if(distance<65){
+
+                c.el.remove();
+
+                coins.splice(i,1);
+
+                coinsCollected++;
+
+                updateCounter();
+
+                say(niko,"+1 🪙!");
+
+                break;
+            }
+        }
+    }
+
+    /* FROGS */
+
+    for(const frog of frogs){
+
+        frog.x+=frog.vx;
+        frog.y+=frog.vy;
+
+        if(
+            frog.x<0||
+            frog.x>innerWidth-70
+        )
+            frog.vx*=-1;
+
+        if(
+            frog.y<80||
+            frog.y>innerHeight-160
+        )
+            frog.vy*=-1;
+
+        frog.el.style.left=
+            frog.x+"px";
+
+        frog.el.style.top=
+            frog.y+"px";
+    }
+
+    /* BEES */
+
+    for(const bee of bees){
+
+        bee.x+=bee.vx;
+        bee.y+=bee.vy;
+
+        if(
+            bee.x<0||
+            bee.x>innerWidth-60
+        )
+            bee.vx*=-1;
+
+        if(
+            bee.y<70||
+            bee.y>innerHeight-140
+        )
+            bee.vy*=-1;
+
+        bee.el.style.left=
+            bee.x+"px";
+
+        bee.el.style.top=
+            bee.y+"px";
+    }
+
+    requestAnimationFrame(update);
+}
+
+/* =========================================================
+   POSITION
+========================================================= */
+
+function position(niko){
+
+    niko.img.style.left=
+        niko.x+"px";
+
+    niko.img.style.top=
+        niko.y+"px";
+
+    niko.speech.style.left=
+        (niko.x+50)+"px";
+
+    niko.speech.style.top=
+        (niko.y-25)+"px";
+
+    niko.zzz.style.left=
+        (niko.x+65)+"px";
+
+    niko.zzz.style.top=
+        (niko.y-10)+"px";
+
+    if(niko.label){
+
+        niko.label.style.left=
+            (niko.x+10)+"px";
+
+        niko.label.style.top=
+            (niko.y-35)+"px";
+    }
+}
+
+/* =========================================================
+   BOUNDARIES
+========================================================= */
+
+function keepInside(niko){
+
+    const maxX=
+        innerWidth-105;
+
+    const maxY=
+        innerHeight-130;
+
+    if(niko.x<0){
+
+        niko.x=0;
+        niko.vx=Math.abs(niko.vx);
+    }
+
+    if(niko.x>maxX){
+
+        niko.x=maxX;
+        niko.vx=-Math.abs(niko.vx);
+    }
+
+    if(niko.y<75){
+
+        niko.y=75;
+        niko.vy=Math.abs(niko.vy);
+    }
+
+    if(niko.y>maxY){
+
+        niko.y=maxY;
+        niko.vy=-Math.abs(niko.vy);
+    }
+}
+
+/* =========================================================
+   AUTO EVENTS
+========================================================= */
+
+setInterval(()=>{
+
+    if(
+        nikos.length &&
+        Math.random()<.30
+    ){
+
+        events[
+            Math.floor(
+                Math.random()*events.length
+            )
+        ]();
+    }
+
+},16000);
+
+/* =========================================================
+   STARS
+========================================================= */
+
+for(let i=0;i<50;i++){
+
+    const star=
+        document.createElement("div");
+
+    star.className="star";
+    star.textContent="✦";
+
+    star.style.left=
+        random(0,100)+"%";
+
+    star.style.top=
+        random(0,60)+"%";
+
+    document.getElementById("stars")
+        .appendChild(star);
+}
+
+/* =========================================================
+   START WORLD
+========================================================= */
+
+createNiko(80,160,true);
+createNiko(400,180);
+createNiko(650,280);
+createNiko(250,350);
+
+updateCounter();
+
+update();
+
+</script>
+
+</body>
+</html>
+```
