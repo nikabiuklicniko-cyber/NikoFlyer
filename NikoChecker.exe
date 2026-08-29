@@ -1,0 +1,61 @@
+```csharp
+using System;
+using System.IO;
+using System.Drawing;
+using System.Windows.Forms;
+
+public class NikoWindow : Form
+{
+    Label status;
+
+    public NikoWindow()
+    {
+        Text = "Niko Checker";
+        Size = new Size(500, 300);
+        StartPosition = FormStartPosition.CenterScreen;
+
+        status = new Label();
+        status.AutoSize = false;
+        status.Dock = DockStyle.Fill;
+        status.TextAlign = ContentAlignment.MiddleCenter;
+        status.Font = new Font("Segoe UI", 14);
+
+        Controls.Add(status);
+
+        CheckNikoFiles();
+    }
+
+    void CheckNikoFiles()
+    {
+        bool nikoPng = File.Exists("niko.png");
+        bool nikoMaker = File.Exists("nikomaker") ||
+                         File.Exists("nikomaker.exe");
+
+        if (nikoPng && nikoMaker)
+        {
+            status.Text = "✅ Niko is ready!\n\nniko.png: FOUND\nnikomaker: FOUND";
+        }
+        else
+        {
+            string result = "❌ Niko files are missing!\n\n";
+
+            result += nikoPng
+                ? "niko.png: FOUND\n"
+                : "niko.png: MISSING\n";
+
+            result += nikoMaker
+                ? "nikomaker: FOUND"
+                : "nikomaker: MISSING";
+
+            status.Text = result;
+        }
+    }
+
+    [STAThread]
+    static void Main()
+    {
+        Application.EnableVisualStyles();
+        Application.Run(new NikoWindow());
+    }
+}
+```
